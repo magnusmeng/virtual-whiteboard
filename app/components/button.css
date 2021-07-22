@@ -1,0 +1,21 @@
+@layer components {
+  .button {
+    @apply relative block px-2 py-1.5 text-center rounded bg-indigo-600 text-white hover:bg-indigo-500;
+  }
+  .button-secondary {
+    @apply relative block px-2 py-1.5 text-center rounded bg-transparent text-gray-600 hover:bg-opacity-10 hover:bg-gray-500;
+  }
+
+  .button:disabled {
+    @apply bg-indigo-300;
+  }
+
+  .button-spinner {
+    @apply inline-block w-5 h-5 animate-spin absolute;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    left: calc(50% - 10px);
+    top: calc(50% - 10px);
+  }
+}

@@ -1,0 +1,14 @@
+@layer components {
+  .input-group {
+    @apply block;
+  }
+  .input-group span {
+    @apply text-sm font-semibold text-gray-700 block mb-1;
+  }
+  .input-group input {
+    @apply text-gray-700 placeholder-gray-400 text-sm px-2 py-1.5 border rounded-sm border-gray-200 w-full focus:border-indigo-500 outline-none focus:ring focus:ring-indigo-100;
+  }
+  .input-group input.invalid {
+    @apply border-red-600;
+  }
+}
