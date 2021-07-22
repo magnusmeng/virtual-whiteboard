@@ -12,11 +12,11 @@ import { BoardsModule } from './boards/boards.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'magnusmengmortensen',
-      password: '',
-      database: 'whiteboards',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432'),
+      username: process.env.DB_USERNAME || 'magnusmengmortensen',
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME || 'whiteboards',
       autoLoadEntities: true,
       synchronize: true, // We do not create migrations atm, so we simply synchronize (with the known risk of destroying data)
     }),
