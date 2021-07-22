@@ -22,6 +22,12 @@ interface IAuthContext {
   activeTeam?: ITeam
 
   signIn: (email: string, password: string) => Promise<IUser>
+  signUp: (
+    email: string,
+    password: string,
+    name: string,
+    teamName: string
+  ) => Promise<IUser>
   signOut: () => Promise<void>
 }
 
@@ -73,6 +79,24 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     [apiClient]
   )
 
+  const signUp: IAuthContext['signUp'] = React.useCallback(
+    async (email, password, name, teamName) => {
+      const { data } = await apiClient.post<{
+        accessToken: string
+        user: IUser
+      }>('auth/sign-up', {
+        email,
+        password,
+        name,
+        teamName,
+      })
+      setUser(data.user)
+      setToken(data.accessToken)
+      return data.user
+    },
+    [apiClient]
+  )
+
   const signOut: IAuthContext['signOut'] = React.useCallback(async () => {
     setToken(undefined)
     setUser(undefined)
@@ -82,11 +106,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = React.useCallback(async () => {
     if (!token) return
-    const { data } = await apiClient.get<IUser>('users/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const { data } = await apiClient.get<IUser>('users/me')
     setUser(data)
   }, [apiClient, token])
 
@@ -132,6 +152,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         activeTeam,
 
         signIn,
+        signUp,
         signOut,
       }}
     >

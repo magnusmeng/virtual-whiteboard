@@ -25,7 +25,6 @@ export default function SignIn() {
       router.push('/')
     } catch (error) {
       // TODO: We should handle errors here
-      console.error(error)
       alert(error.message)
     }
   }
@@ -59,6 +58,11 @@ export default function SignIn() {
       <Button className="button w-full mt-4" onClick={handleSubmit(onSubmit)}>
         Sign in
       </Button>
+      <Link href="/auth/sign-up">
+        <a className="button-secondary w-full mt-2">
+          Don&apos;t have an account yet?
+        </a>
+      </Link>
       <Link href="/auth/forgot">
         <a className="button-secondary w-full mt-2">Forgot your password?</a>
       </Link>

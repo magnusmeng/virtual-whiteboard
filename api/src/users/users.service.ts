@@ -1,3 +1,4 @@
+import { TeamsService } from './../teams/teams.service';
 import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -9,16 +10,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
+    private teamsService: TeamsService
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    const user = this.usersRepository.create(createUserDto);
-    return this.usersRepository.save(user);
+  async create(createUserDto: CreateUserDto) {
+    let user = this.usersRepository.create(createUserDto);
+    user = await this.usersRepository.save(user);
+    const team = await this.teamsService.create({
+      ownerId: user.id,
+      name: createUserDto.teamName,
+    });
+    user.teamId = team.id;
+    user = await this.usersRepository.save(user);
+    return user;
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.usersRepository.find();
   }
 
   findOne(id: number): Promise<User | undefined> {
@@ -30,7 +39,7 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.usersRepository.update({ id }, updateUserDto);
   }
 
   remove(id: number) {

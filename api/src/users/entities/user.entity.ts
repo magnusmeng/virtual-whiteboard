@@ -1,3 +1,4 @@
+import { Team } from './../../teams/entities/team.entity';
 import { hashSync } from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import {
@@ -6,6 +7,8 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -21,6 +24,13 @@ export class User {
 
   @Column({ length: 256 })
   name: string;
+
+  @ManyToOne(() => Team, (team) => team.members)
+  @JoinColumn({ name: 'teamId' })
+  team: Team;
+
+  @Column({ type: 'int', nullable: true })
+  teamId: number;
 
   /** PASSWORD CONTROL FLOW */
 
