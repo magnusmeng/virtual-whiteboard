@@ -18,7 +18,9 @@ import { BoardsModule } from './boards/boards.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME || 'whiteboards',
       autoLoadEntities: true,
-      ssl: process.env.NODE_ENV === 'production',
+      ssl: {
+        rejectUnauthorized: false,
+      },
       synchronize: true, // We do not create migrations atm, so we simply synchronize (with the known risk of destroying data)
     }),
     AuthModule,
