@@ -1,26 +1,30 @@
-import { ReactNode } from 'react'
+import Head from 'next/head'
+import React, { ReactNode } from 'react'
+import { useAuth } from '../../models'
+import Button from '../Button'
 
-export default function AppLayout({
-  children,
-  title,
-}: {
-  children?: ReactNode
-  title: string
-}) {
+export default function AppLayout({ children }: { children?: ReactNode }) {
+  const auth = useAuth()
+
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-grow h-full"></div>
-
-      <div className="max-w-md w-full mx-auto p-4 flex-shrink-0 flex-grow-0">
-        <div className="text-center">
-          <h1 className="font-serif text-5xl mb-2">{title}</h1>
-        </div>
-        <div className="p-4 md:p-6 border rounded border-gray-200 w-full mt-4">
-          {children}
-        </div>
-      </div>
-
-      <div className="flex-grow h-full"></div>
+    <div className="h-full flex flex-col bg-gray-50">
+      <Head>
+        <title>Virtual Whiteboard</title>
+        <meta
+          name="description"
+          content="A virtual whiteboard to share with your colleagues"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="flex-1">{children}</main>
+      <footer className="flex flex-col justify-center items-center p-3">
+        <Button secondary onClick={() => auth.signOut()}>
+          Sign out
+        </Button>
+        <p className="text-sm text-gray-500">
+          A virtual whiteboard service developed by Magnus Meng Mortensen
+        </p>
+      </footer>
     </div>
   )
 }

@@ -135,7 +135,13 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         signOut,
       }}
     >
-      {!setupDone ? <div>Loading ...</div> : children}
+      {!setupDone ? (
+        <div className="flex h-full items-center justify-center">
+          <p className="text-xl font-serif animate-ping">Loading</p>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   )
 }
