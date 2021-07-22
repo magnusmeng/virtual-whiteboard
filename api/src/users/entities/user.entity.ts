@@ -7,6 +7,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -20,6 +21,7 @@ export class User {
   id: number;
 
   @Column({ length: 320 })
+  @Index({ unique: true })
   email: string;
 
   @Column({ length: 256 })

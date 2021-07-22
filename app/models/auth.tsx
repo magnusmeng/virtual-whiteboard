@@ -12,7 +12,7 @@ import {
   LOCAL_STORAGE_USER_KEY,
 } from './constants'
 import ITeam from './team'
-import IUser from './user'
+import IUser, { ISignUpData } from './user'
 
 interface IAuthContext {
   apiClient: AxiosInstance
@@ -22,12 +22,7 @@ interface IAuthContext {
   activeTeam?: ITeam
 
   signIn: (email: string, password: string) => Promise<IUser>
-  signUp: (
-    email: string,
-    password: string,
-    name: string,
-    teamName: string
-  ) => Promise<IUser>
+  signUp: (values: ISignUpData) => Promise<IUser>
   signOut: () => Promise<void>
 }
 
@@ -80,16 +75,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   )
 
   const signUp: IAuthContext['signUp'] = React.useCallback(
-    async (email, password, name, teamName) => {
+    async (values) => {
       const { data } = await apiClient.post<{
         accessToken: string
         user: IUser
-      }>('auth/sign-up', {
-        email,
-        password,
-        name,
-        teamName,
-      })
+      }>('auth/sign-up', values)
       setUser(data.user)
       setToken(data.accessToken)
       return data.user

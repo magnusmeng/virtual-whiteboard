@@ -5,22 +5,17 @@ import Button from '../../components/Button'
 
 import InputGroup from '../../components/InputGroup'
 import AuthLayout from '../../components/layouts/AuthLayout'
-import { useAuth } from '../../models'
-
-interface ISignInData {
-  email: string
-  password: string
-}
+import { ISignUpData, useAuth } from '../../models'
 
 export default function SignUp() {
   const authStore = useAuth()
   const router = useRouter()
 
-  const { register, handleSubmit, formState } = useForm<ISignInData>()
+  const { register, handleSubmit, formState } = useForm<ISignUpData>()
 
-  const onSubmit = async (values: ISignInData) => {
+  const onSubmit = async (values: ISignUpData) => {
     try {
-      const user = await authStore.signIn(values.email, values.password)
+      const user = await authStore.signUp(values)
       router.push('/')
     } catch (error) {
       // TODO: We should handle errors here
@@ -29,11 +24,37 @@ export default function SignUp() {
   }
 
   return (
-    <AuthLayout title="Sign in" sub="Enter your credentials to enter the site">
+    <AuthLayout
+      title="Sign up"
+      sub="Enter your credentials to create a new account"
+    >
+      <InputGroup
+        label="Name"
+        placeholder="Enter your name"
+        type="text"
+        {...register('name', {
+          required: 'Please enter your name',
+        })}
+        validationMessage={formState.errors.name?.message}
+      />
+      <InputGroup
+        label="Team name"
+        placeholder="Enter the name of your new team"
+        type="text"
+        className="mt-4"
+        {...register('teamName', {
+          required: 'Please enter the name of your new team',
+        })}
+        validationMessage={formState.errors.teamName?.message}
+      />
+
+      <div className="w-full border-t border-gray-200 mt-6" />
+
       <InputGroup
         label="Email"
         placeholder="Enter your email"
         type="email"
+        className="mt-4"
         {...register('email', {
           required: 'Please enter your email',
           pattern: {
@@ -54,16 +75,13 @@ export default function SignUp() {
         validationMessage={formState.errors.password?.message}
       />
 
+      <div className="w-full border-t border-gray-200 my-6" />
+
       <Button className="button w-full mt-4" onClick={handleSubmit(onSubmit)}>
-        Sign in
+        Create your account
       </Button>
-      <Link href="/auth/sign-up">
-        <a className="button-secondary w-full mt-2">
-          Don&apos;t have an account yet?
-        </a>
-      </Link>
-      <Link href="/auth/forgot">
-        <a className="button-secondary w-full mt-2">Forgot your password?</a>
+      <Link href="/auth/sign-in">
+        <a className="button-secondary w-full mt-2">Already have an account?</a>
       </Link>
     </AuthLayout>
   )
