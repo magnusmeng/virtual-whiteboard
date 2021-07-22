@@ -1,7 +1,7 @@
 interface ITeam {
   id: number
   name: string
-  users: number
+  ownerId: number
 }
 
 export default ITeam

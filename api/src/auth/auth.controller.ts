@@ -24,8 +24,7 @@ export class AuthController {
 
   @Post('sign-up')
   async signUp(@Body() signUpDto: CreateUserDto) {
-    return this.authService.signUp(signUpDto).catch((err: any) => {
-      console.log(err);
+    const user = await this.authService.signUp(signUpDto).catch((err: any) => {
       switch (err.code) {
         case '23505': // Postgres Unique violation code.. This is a magic constant and should not be handled like this in production.
           throw new HttpException(
@@ -39,6 +38,7 @@ export class AuthController {
           throw err;
       }
     });
+    return this.authService.signIn(user);
   }
 
   @Post('forgot')

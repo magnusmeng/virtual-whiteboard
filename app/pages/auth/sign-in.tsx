@@ -16,16 +16,22 @@ export default function SignIn() {
   const authStore = useAuth()
   const router = useRouter()
 
-  const { register, handleSubmit, formState } = useForm<ISignInData>()
+  const { register, handleSubmit, formState, setError } = useForm<ISignInData>()
 
   const onSubmit = async (values: ISignInData) => {
     try {
       const user = await authStore.signIn(values.email, values.password)
-      console.log(user)
       router.push('/')
     } catch (error) {
-      // TODO: We should handle errors here
-      alert(error.message)
+      if (error.response && error.response.status === 401) {
+        setError('password', {
+          type: 'unauthorized',
+          message: 'Invalid email or password',
+        })
+      } else {
+        // TODO: We should handle errors here
+        alert(error.message)
+      }
     }
   }
 

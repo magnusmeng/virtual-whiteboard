@@ -1,3 +1,4 @@
+import { Board } from './../../boards/entities/board.entity';
 import { User } from './../../users/entities/user.entity';
 import {
   Column,
@@ -16,7 +17,7 @@ export class Team {
   @Column({ length: 60 })
   name: string;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'ownerId' })
   owner: User;
 
@@ -25,4 +26,7 @@ export class Team {
 
   @OneToMany(() => User, (user) => user.team)
   members: User[];
+
+  @OneToMany(() => Board, (board) => board.team)
+  boards: Board[];
 }

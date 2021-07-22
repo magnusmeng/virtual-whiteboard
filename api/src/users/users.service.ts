@@ -21,7 +21,7 @@ export class UsersService {
       ownerId: user.id,
       name: createUserDto.teamName,
     });
-    user.teamId = team.id;
+    user.team = team;
     user = await this.usersRepository.save(user);
     return user;
   }
@@ -31,11 +31,11 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User | undefined> {
-    return this.usersRepository.findOne({ id });
+    return this.usersRepository.findOne({ id }, { relations: ['team'] });
   }
 
   findOneByEmail(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ email });
+    return this.usersRepository.findOne({ email }, { relations: ['team'] });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

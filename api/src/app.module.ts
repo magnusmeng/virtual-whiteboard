@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeamsModule } from './teams/teams.module';
+import { BoardsModule } from './boards/boards.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { TeamsModule } from './teams/teams.module';
     AuthModule,
     UsersModule,
     TeamsModule,
+    BoardsModule,
   ],
   controllers: [AppController],
   providers: [

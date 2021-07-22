@@ -65,6 +65,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         {
           email,
           password,
+        },
+        {
+          headers: {},
         }
       )
       setUser(res.data.user)
@@ -148,7 +151,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     >
       {!setupDone ? (
         <div className="flex h-full items-center justify-center">
-          <p className="text-xl font-serif animate-ping">Loading</p>
+          <p className="text-xl font-serif">Loading</p>
         </div>
       ) : (
         children

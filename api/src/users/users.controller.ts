@@ -13,6 +13,7 @@ import {
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+@UseGuards(JWTAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -22,7 +23,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @UseGuards(JWTAuthGuard)
   @Get('me')
   findMe(@Request() req) {
     return req.user;

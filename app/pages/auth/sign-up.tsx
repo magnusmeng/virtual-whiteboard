@@ -11,7 +11,7 @@ export default function SignUp() {
   const authStore = useAuth()
   const router = useRouter()
 
-  const { register, handleSubmit, formState } = useForm<ISignUpData>()
+  const { register, handleSubmit, formState, setError } = useForm<ISignUpData>()
 
   const onSubmit = async (values: ISignUpData) => {
     try {
@@ -19,7 +19,12 @@ export default function SignUp() {
       router.push('/')
     } catch (error) {
       // TODO: We should handle errors here
-      alert(error.message)
+      if (error.response && error.response.status === 409) {
+        setError('email', {
+          type: 'unique',
+          message: 'Email is already taken',
+        })
+      } else alert(error.message)
     }
   }
 

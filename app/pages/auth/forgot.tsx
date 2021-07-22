@@ -14,8 +14,10 @@ export default function Forgot() {
   const { register, handleSubmit, formState } = useForm<IForgotData>()
 
   const onSubmit = async (values: IForgotData) => {
-    console.log(values)
-    return new Promise((re, rj) => setTimeout(() => re(false), 1000))
+    await new Promise((re, rj) => setTimeout(() => re(false), 1000))
+    alert(
+      'You cannot change password. The API is not connected to an email-provider, so we do not send out reset-links at this moment'
+    )
   }
 
   return (

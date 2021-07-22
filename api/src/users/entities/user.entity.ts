@@ -27,7 +27,7 @@ export class User {
   @Column({ length: 256 })
   name: string;
 
-  @ManyToOne(() => Team, (team) => team.members)
+  @ManyToOne(() => Team, (team) => team.members, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'teamId' })
   team: Team;
 
@@ -55,5 +55,6 @@ export class User {
     if (this.password !== this.tempPassword) {
       this.password = hashSync(this.password, SALT_ROUNDS);
     }
+    this.email = this.email.toLowerCase();
   }
 }
