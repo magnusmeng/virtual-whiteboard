@@ -1,9 +1,11 @@
+import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import Button from '../../components/Button'
 
 import InputGroup from '../../components/InputGroup'
 import AuthLayout from '../../components/layouts/AuthLayout'
+import { useAuth } from '../../models'
 
 interface ISignInData {
   email: string
@@ -11,11 +13,21 @@ interface ISignInData {
 }
 
 export default function SignIn() {
+  const authStore = useAuth()
+  const router = useRouter()
+
   const { register, handleSubmit, formState } = useForm<ISignInData>()
 
   const onSubmit = async (values: ISignInData) => {
-    console.log(values)
-    return new Promise((re, rj) => setTimeout(() => re(false), 1000))
+    try {
+      const user = await authStore.signIn(values.email, values.password)
+      console.log(user)
+      router.push('/')
+    } catch (error) {
+      // TODO: We should handle errors here
+      console.error(error)
+      alert(error.message)
+    }
   }
 
   return (
